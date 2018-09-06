@@ -10,9 +10,9 @@ import (
 
 //every layer nodes.output * weight = next layer
 type neuralLayer struct {
-	nodes  []float32
-	weight [][]float32
-	derive []float32
+	nodes  []float64
+	weight [][]float64
+	derive []float64
 
 	nextLayer *neuralLayer
 }
@@ -58,16 +58,16 @@ func (nl *neuralLayer) forward() bool {
 	return true
 }
 
-func (nn *neuralNetwork) value() []float32 {
+func (nn *neuralNetwork) value() []float64 {
 	//last layer is value of the network
 	return nn.layers[len(nn.layers)-1].nodes
 }
 
-func (nl *neuralLayer) value() []float32 {
+func (nl *neuralLayer) value() []float64 {
 	return nl.nodes
 }
 
-func (nl *neuralLayer) weights() [][]float32 {
+func (nl *neuralLayer) weights() [][]float64 {
 	return nl.weight
 }
 
@@ -75,7 +75,7 @@ func (nl *neuralLayer) weights() [][]float32 {
 given layers initialize the weights
 */
 func (nn *neuralNetwork) addLayer(nl *neuralLayer, currSize int) {
-	nl.nodes = []float32{}
+	nl.nodes = []float64{}
 	for j := 0; j < currSize; j++ {
 		nl.nodes = append(nl.nodes, 0)
 	}
@@ -89,17 +89,17 @@ func (nn *neuralNetwork) addLayer(nl *neuralLayer, currSize int) {
 	//fmt.Println(size)
 	r := rand.New(rand.NewSource(time.Now().Unix()))
 	for g := 0; g < len(nn.layers[size-2].nodes); g++ {
-		array := make([]float32, currSize)
+		array := make([]float64, currSize)
 		nn.layers[size-2].weight = append(nn.layers[size-2].weight, array)
 		for k := 0; k < currSize; k++ {
 			//fmt.Println(k, g)
 
-			nn.layers[size-2].weight[g][k] = r.Float32() * 30
+			nn.layers[size-2].weight[g][k] = r.Float64() * 30
 		}
 	}
 	nn.layers[size-2].nextLayer = nn.layers[size-1]
 }
-func (nn *neuralNetwork) forward(input []float32) float32 {
+func (nn *neuralNetwork) forward(input []float64) float64 {
 	if len(input) != len(nn.layers[0].nodes) {
 		//exception
 		panic("shape not equals.")
@@ -113,16 +113,16 @@ func (nn *neuralNetwork) forward(input []float32) float32 {
 	return 0.0
 }
 
-func (nn *neuralNetwork) backward(output []float32, learnRate float32) float32 {
+func (nn *neuralNetwork) backward(output []float64, learnRate float64) float64 {
 	size := len(nn.layers)
 	derive := output
 	for i := size - 1; i > 0; i-- {
 		oldDerive := nn.layers[i].backward(derive)
 		fmt.Println(derive, oldDerive)
 		//calc lower layer's derives
-		var deriveLow []float32
+		var deriveLow []float64
 		for indexLow, value := range nn.layers[i-1].nodes {
-			deriveCur := float32(0.0)
+			deriveCur := float64(0.0)
 			for index, d := range oldDerive {
 				deriveCur = deriveCur + d*nn.layers[i-1].weight[indexLow][index]
 				//change lower weights with learning rate
@@ -133,19 +133,19 @@ func (nn *neuralNetwork) backward(output []float32, learnRate float32) float32 {
 		derive = deriveLow
 
 	}
-	sumLoss := float32(0.0)
+	sumLoss := float64(0.0)
 	for i, _ := range nn.layers[len(nn.layers)-1].nodes {
 		sumLoss = sumLoss + (nn.layers[len(nn.layers)-1].nodes[i]-output[i])*(nn.layers[len(nn.layers)-1].nodes[i]-output[i])
 	}
 	return sumLoss
 }
 
-func (nl *neuralLayer) backward(output []float32) []float32 {
+func (nl *neuralLayer) backward(output []float64) []float64 {
 	size := len(nl.nodes)
 	if size != len(output) {
 		panic("backward output's size not equals to nodes")
 	}
-	var newDerive []float32
+	var newDerive []float64
 	for i, v := range output {
 		newDerive = append(newDerive, v-nl.nodes[i])
 	}
@@ -165,7 +165,7 @@ func (nn *neuralNetwork) print() {
 		nn.layers[i].printLayer()
 	}
 }
-func (nn *neuralNetwork) train(input []float32, output []float32, learningRate float32) float32 {
+func (nn *neuralNetwork) train(input []float64, output []float64, learningRate float64) float64 {
 	nn.forward(input)
 	nn.print()
 	fmt.Println("backward")
@@ -180,7 +180,7 @@ func main() {
 			fmt.Println("ERROR:", err) // 这里的err其实就是panic传入的内容
 		}
 	}()
-	//var arr []float32
+	//var arr []float64
 	//nl1 := new(neuralLayer)
 	//nl2 := new(neuralLayer)
 	////nl3 := new(neuralLayer)ddd
@@ -189,9 +189,9 @@ func main() {
 	//nn.addLayer(nl2, 1)
 	//for i := 0; i < 20000; i++ {
 	//	fmt.Println("Round", i)
-	//	arr = append(arr, nn.train([]float32{1, 2, 2}, []float32{14}, 0.01))
-	//	arr = append(arr, nn.train([]float32{3, 4, 4}, []float32{30}, 0.01))
-	//	arr = append(arr, nn.train([]float32{2, 3, 7}, []float32{33}, 0.01))
+	//	arr = append(arr, nn.train([]float64{1, 2, 2}, []float64{14}, 0.01))
+	//	arr = append(arr, nn.train([]float64{3, 4, 4}, []float64{30}, 0.01))
+	//	arr = append(arr, nn.train([]float64{2, 3, 7}, []float64{33}, 0.01))
 	//}
 	//fmt.Println(arr)
 	fmt.Println(matUtil.MatMul([][]float64{{2}, {3}}, matUtil.AscendDimesion([]float64{4}, 0)))
