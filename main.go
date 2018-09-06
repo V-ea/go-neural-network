@@ -1,6 +1,7 @@
 package main
 
 import (
+	"./matUtil"
 	"fmt"
 	"math/rand"
 	"strconv"
@@ -179,19 +180,20 @@ func main() {
 			fmt.Println("ERROR:", err) // 这里的err其实就是panic传入的内容
 		}
 	}()
-	var arr []float32
-	nl1 := new(neuralLayer)
-	nl2 := new(neuralLayer)
-	//nl3 := new(neuralLayer)ddd
-	nn := new(neuralNetwork)
-	nn.addLayer(nl1, 3)
-	nn.addLayer(nl2, 1)
-	for i := 0; i < 20000; i++ {
-		fmt.Println("Round", i)
-		arr = append(arr, nn.train([]float32{1, 2, 2}, []float32{14}, 0.01))
-		arr = append(arr, nn.train([]float32{3, 4, 4}, []float32{30}, 0.01))
-		arr = append(arr, nn.train([]float32{2, 3, 7}, []float32{33}, 0.01))
-	}
-	fmt.Println(arr)
+	//var arr []float32
+	//nl1 := new(neuralLayer)
+	//nl2 := new(neuralLayer)
+	////nl3 := new(neuralLayer)ddd
+	//nn := new(neuralNetwork)
+	//nn.addLayer(nl1, 3)
+	//nn.addLayer(nl2, 1)
+	//for i := 0; i < 20000; i++ {
+	//	fmt.Println("Round", i)
+	//	arr = append(arr, nn.train([]float32{1, 2, 2}, []float32{14}, 0.01))
+	//	arr = append(arr, nn.train([]float32{3, 4, 4}, []float32{30}, 0.01))
+	//	arr = append(arr, nn.train([]float32{2, 3, 7}, []float32{33}, 0.01))
+	//}
+	//fmt.Println(arr)
 
+	fmt.Println(matUtil.MatMul([][]float32{{2}, {3}}, [][]float32{{4}}))
 }
