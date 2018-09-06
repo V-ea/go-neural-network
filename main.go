@@ -194,6 +194,5 @@ func main() {
 	//	arr = append(arr, nn.train([]float32{2, 3, 7}, []float32{33}, 0.01))
 	//}
 	//fmt.Println(arr)
-
 	fmt.Println(matUtil.MatMul([][]float32{{2}, {3}}, [][]float32{{4}}))
 }
