@@ -180,19 +180,19 @@ func main() {
 			fmt.Println("ERROR:", err) // 这里的err其实就是panic传入的内容
 		}
 	}()
-	//var arr []float64
-	//nl1 := new(neuralLayer)
-	//nl2 := new(neuralLayer)
-	////nl3 := new(neuralLayer)ddd
-	//nn := new(neuralNetwork)
-	//nn.addLayer(nl1, 3)
-	//nn.addLayer(nl2, 1)
-	//for i := 0; i < 20000; i++ {
-	//	fmt.Println("Round", i)
-	//	arr = append(arr, nn.train([]float64{1, 2, 2}, []float64{14}, 0.01))
-	//	arr = append(arr, nn.train([]float64{3, 4, 4}, []float64{30}, 0.01))
-	//	arr = append(arr, nn.train([]float64{2, 3, 7}, []float64{33}, 0.01))
-	//}
+	var arr []float64
+	nl1 := new(neuralLayer)
+	nl2 := new(neuralLayer)
+	//nl3 := new(neuralLayer)ddd
+	nn := new(neuralNetwork)
+	nn.addLayer(nl1, 3)
+	nn.addLayer(nl2, 1)
+	for i := 0; i < 20000; i++ {
+		fmt.Println("Round", i)
+		arr = append(arr, nn.train([]float64{1, 2, 2}, []float64{14}, 0.01))
+		arr = append(arr, nn.train([]float64{3, 4, 4}, []float64{30}, 0.01))
+		arr = append(arr, nn.train([]float64{2, 3, 7}, []float64{33}, 0.01))
+	}
 	//fmt.Println(arr)
 	fmt.Println(matUtil.MatMul([][]float64{{2}, {3}}, matUtil.AscendDimesion([]float64{4}, 0)))
 }
